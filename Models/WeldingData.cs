@@ -192,7 +192,8 @@ public static class WeldingDatabase
         new Scenario { Situation = "Stainless - Avoiding Sugaring", RecommendedProcess = "CMT or LSC", RecommendedCharacteristic = "universal", Notes = "Lower heat input = less oxidation on backside. Shorten arc length (-2 to -5).", Tags = ["stainless", "SS", "sugaring", "oxidation", "backside"] },
         new Scenario { Situation = "Galvanized material", RecommendedProcess = "Any", RecommendedCharacteristic = "galvanized", Notes = "Reduces zinc blowout and pores", Tags = ["galvanized", "zinc", "coated"] },
         new Scenario { Situation = "Brazing", RecommendedProcess = "CMT", RecommendedCharacteristic = "braze or ADV braze", Notes = "Wire reversal helps braze flow", Tags = ["braze", "brazing", "bronze"] },
-        new Scenario { Situation = "Pretty TIG-looking beads", RecommendedProcess = "PMC", RecommendedCharacteristic = "ripple drive or mix", Notes = "Creates stacked dime look", Tags = ["TIG", "pretty", "ripple", "stacked dimes"] },
+        new Scenario { Situation = "Pretty TIG-looking beads", RecommendedProcess = "PMC", RecommendedCharacteristic = "ripple drive or mix", Notes = "Creates stacked dime look. Or use SynchroPulse!", Tags = ["TIG", "pretty", "ripple", "stacked dimes", "synchropulse"] },
+        new Scenario { Situation = "SynchroPulse - Stacked Dimes", RecommendedProcess = "PMC or Pulsed", RecommendedCharacteristic = "universal + SynchroPulse ON", Notes = "Enable SynchroPulse, set frequency 1-3 Hz, amplitude 20-40%. Creates TIG-like ripple.", Tags = ["synchropulse", "TIG", "ripple", "stacked dimes", "cosmetic"] },
         new Scenario { Situation = "Poor fit-up / big gaps", RecommendedProcess = "CMT", RecommendedCharacteristic = "gap bridging", Notes = "Lowest heat = best bridging", Tags = ["gap", "fitup", "poor fit"] },
         new Scenario { Situation = "Overlay / hardfacing", RecommendedProcess = "CMT or PMC", RecommendedCharacteristic = "cladding", Notes = "Low penetration, low dilution", Tags = ["overlay", "hardfacing", "cladding", "buildup"] },
         new Scenario { Situation = "Pipe welding", RecommendedProcess = "PMC or Standard", RecommendedCharacteristic = "pipe", Notes = "Optimized for positional work", Tags = ["pipe", "tube", "positional"] },
@@ -283,6 +284,24 @@ public static class WeldingDatabase
                 "Clean material, good fit-up: Keep dynamics moderate or low for smooth arc.",
                 "Vertical up: Moderate dynamics helps control the puddle without it dripping.",
                 "Combined with arc length: Short arc + high dynamics = maximum penetration. Long arc + low dynamics = maximum forgiveness."
+            ]
+        },
+        new TipSection
+        {
+            Title = "SynchroPulse - TIG-Look Ripple Beads",
+            Icon = "waves",
+            Tips = [
+                "SynchroPulse creates that stacked-dime TIG appearance by cycling between HIGH and LOW power.",
+                "Works with: Standard, Pulsed, LSC, and PMC processes. Most common with PMC or Pulsed.",
+                "ENABLE IT: Process parameters → SynchroPulse → turn it ON. Then set your frequency and amplitude.",
+                "FREQUENCY (Hz): How many ripples per second. 1-2 Hz = wide spacing (like slow TIG). 3-5 Hz = tighter ripples. Start at 2 Hz.",
+                "AMPLITUDE (%): How big the power swing is. Higher = more pronounced ripple. 20-30% for subtle, 40-50% for bold ripples.",
+                "DUTY CYCLE: Ratio of high to low power time. 50% = equal. Higher = more time at high power (hotter average).",
+                "For COSMETIC welds: Try 1.5-2.5 Hz frequency, 30-40% amplitude. Adjust to match your travel speed.",
+                "Travel speed matters! Slower travel = ripples stack tighter. Faster = ripples spread out. Match frequency to your speed.",
+                "Vertical up: SynchroPulse helps control the puddle - the LOW phase lets the puddle freeze slightly.",
+                "Too much spatter? Lower the amplitude. Ripples too subtle? Increase amplitude or slow down.",
+                "Stainless with SynchroPulse: The pulsing helps control heat input while still getting that pretty bead."
             ]
         }
     };
