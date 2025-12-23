@@ -1,0 +1,404 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Fronius TPS 400i Cheat Sheet";
+}
+
+<!-- App Header -->
+<header class="app-header">
+    <div class="app-header-content">
+        <h1 class="app-title">Fronius TPS 400i</h1>
+        <p class="app-subtitle">Welder's Quick Reference Guide</p>
+    </div>
+</header>
+
+<!-- Desktop Navigation -->
+<nav class="desktop-nav d-none d-md-block">
+    <ul class="nav-tabs-custom">
+        <li>
+            <button class="nav-tab active" data-tab="scenario">
+                <span class="material-icons-round">build</span>
+                What Do I Need?
+            </button>
+        </li>
+        <li>
+            <button class="nav-tab" data-tab="search">
+                <span class="material-icons-round">search</span>
+                Search Settings
+            </button>
+        </li>
+        <li>
+            <button class="nav-tab" data-tab="process">
+                <span class="material-icons-round">compare_arrows</span>
+                Compare Processes
+            </button>
+        </li>
+        <li>
+            <button class="nav-tab" data-tab="params">
+                <span class="material-icons-round">tune</span>
+                Parameters
+            </button>
+        </li>
+        <li>
+            <button class="nav-tab" data-tab="tips">
+                <span class="material-icons-round">lightbulb</span>
+                Pro Tips
+            </button>
+        </li>
+    </ul>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+
+    <!-- ==================== SCENARIO TAB ==================== -->
+    <section id="scenario" class="tab-pane active">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="material-icons-round">build</span>
+                What are you welding?
+            </h2>
+            <p class="section-subtitle">Tap your scenario to see the recommended settings</p>
+        </div>
+
+        <div class="card-grid">
+            @foreach (var scenario in Model.Scenarios)
+            {
+                <div class="scenario-card" onclick="showScenarioDetail(this)"
+                     data-process="@scenario.RecommendedProcess"
+                     data-characteristic="@scenario.RecommendedCharacteristic"
+                     data-notes="@scenario.Notes">
+                    <h3 class="scenario-title">@scenario.Situation</h3>
+                    <div class="scenario-badges">
+                        <span class="badge-custom badge-process">@scenario.RecommendedProcess</span>
+                        <span class="badge-custom badge-characteristic">@scenario.RecommendedCharacteristic</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Detail Panel -->
+        <div id="scenarioDetail" class="detail-panel" style="display:none;">
+            <div class="detail-header">
+                <h3 class="detail-title" id="detailTitle"></h3>
+                <button class="detail-close" onclick="hideScenarioDetail()">
+                    <span class="material-icons-round">close</span>
+                </button>
+            </div>
+            <div class="detail-body">
+                <div class="detail-row">
+                    <span class="detail-label">Process</span>
+                    <span class="detail-value process" id="detailProcess"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Characteristic</span>
+                    <span class="detail-value characteristic" id="detailCharacteristic"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Notes</span>
+                    <span class="detail-value" id="detailNotes"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SEARCH TAB ==================== -->
+    <section id="search" class="tab-pane">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="material-icons-round">search</span>
+                Search Characteristics
+            </h2>
+            <p class="section-subtitle">Find what any setting does</p>
+        </div>
+
+        <div class="search-container">
+            <span class="material-icons-round search-icon">search</span>
+            <input type="text"
+                   id="searchInput"
+                   class="search-input"
+                   placeholder="Search (e.g., root, galvanized, gap...)"
+                   oninput="filterCharacteristics()">
+        </div>
+
+        <div class="filter-chips">
+            <button class="filter-chip active" onclick="filterByProcess('all', this)">All</button>
+            <button class="filter-chip" onclick="filterByProcess('PMC', this)">PMC</button>
+            <button class="filter-chip" onclick="filterByProcess('CMT', this)">CMT</button>
+            <button class="filter-chip" onclick="filterByProcess('LSC', this)">LSC</button>
+            <button class="filter-chip" onclick="filterByProcess('Standard', this)">Standard</button>
+            <button class="filter-chip" onclick="filterByProcess('Puls', this)">Pulsed</button>
+        </div>
+
+        <div id="characteristicsList" class="char-list">
+            @foreach (var c in Model.Characteristics.OrderBy(x => x.Name))
+            {
+                <div class="char-card"
+                     data-name="@c.Name.ToLower()"
+                     data-processes="@string.Join(",", c.Processes).ToLower()"
+                     data-tags="@string.Join(",", c.Tags).ToLower()">
+                    <h4 class="char-name">@c.Name</h4>
+                    <div class="char-processes">
+                        @foreach (var p in c.Processes)
+                        {
+                            <span class="badge-custom badge-neutral">@p</span>
+                        }
+                    </div>
+                    <p class="char-desc">@c.Description</p>
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- ==================== PROCESS TAB ==================== -->
+    <section id="process" class="tab-pane">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="material-icons-round">compare_arrows</span>
+                Welding Processes
+            </h2>
+            <p class="section-subtitle">Understand the differences between each mode</p>
+        </div>
+
+        <div class="card-grid">
+            @foreach (var proc in Model.Processes)
+            {
+                <div class="process-card">
+                    <div class="process-header">
+                        <h3 class="process-name">@proc.ShortName</h3>
+                        <p class="process-fullname">@proc.Name</p>
+                    </div>
+                    <div class="process-body">
+                        <p class="process-desc">@proc.Description</p>
+
+                        <div class="process-section">
+                            <h4 class="process-section-title">How It Works</h4>
+                            <p>@proc.HowItWorks</p>
+                        </div>
+
+                        <div class="process-section">
+                            <h4 class="process-section-title">Best For</h4>
+                            <ul>
+                                @foreach (var item in proc.BestFor)
+                                {
+                                    <li>@item</li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="pros-cons-grid">
+                            <div>
+                                <h4 class="process-section-title text-success">Pros</h4>
+                                <ul class="pros-list">
+                                    @foreach (var pro in proc.Pros)
+                                    {
+                                        <li>@pro</li>
+                                    }
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="process-section-title" style="color: var(--accent-danger);">Cons</h4>
+                                <ul class="cons-list">
+                                    @foreach (var con in proc.Cons)
+                                    {
+                                        <li>@con</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Decision Tree -->
+        <div class="decision-tree">
+            <h3 class="decision-tree-title">
+                <span class="material-icons-round">help_outline</span>
+                Quick Decision Guide
+            </h3>
+            <div class="decision-item">
+                <span class="decision-question">Thin sheet, gaps, or galvanized?</span>
+                <span class="decision-answer">CMT or LSC</span>
+            </div>
+            <div class="decision-item">
+                <span class="decision-question">Need it pretty with minimal cleanup?</span>
+                <span class="decision-answer">PMC or Pulsed</span>
+            </div>
+            <div class="decision-item">
+                <span class="decision-question">Thick plate, just need to fill?</span>
+                <span class="decision-answer">Standard or PMC</span>
+            </div>
+            <div class="decision-item">
+                <span class="decision-question">Root passes?</span>
+                <span class="decision-answer">LSC or CMT + "root"</span>
+            </div>
+            <div class="decision-item">
+                <span class="decision-question">Not sure where to start?</span>
+                <span class="decision-answer">PMC + "universal"</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PARAMETERS TAB ==================== -->
+    <section id="params" class="tab-pane">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="material-icons-round">tune</span>
+                Parameter Reference
+            </h2>
+            <p class="section-subtitle">What each setting actually does</p>
+        </div>
+
+        <!-- Primary Parameters -->
+        <h3 class="mb-lg" style="color: var(--accent-success);">
+            <span class="material-icons-round" style="vertical-align: middle;">star</span>
+            Primary Controls
+        </h3>
+        <div class="char-list mb-xl">
+            @foreach (var param in Model.Parameters.Where(p => p.IsPrimary))
+            {
+                <div class="param-card primary">
+                    <div class="param-symbol">@param.Symbol</div>
+                    <div class="param-content">
+                        <h4 class="param-name">@param.Name</h4>
+                        <p class="param-desc">@param.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Secondary Parameters -->
+        <h3 class="mb-lg" style="color: var(--text-medium);">
+            <span class="material-icons-round" style="vertical-align: middle;">tune</span>
+            Secondary Controls (Fine Tuning)
+        </h3>
+        <div class="char-list">
+            @foreach (var param in Model.Parameters.Where(p => !p.IsPrimary))
+            {
+                <div class="param-card">
+                    <div class="param-symbol">@param.Symbol</div>
+                    <div class="param-content">
+                        <h4 class="param-name">@param.Name</h4>
+                        <p class="param-desc">@param.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Synergic Mode Info -->
+        <div class="info-box info">
+            <h4 class="info-box-title">
+                <span class="material-icons-round">lightbulb</span>
+                Synergic Mode
+            </h4>
+            <p>You set <strong>THICKNESS</strong> → Machine calculates <strong>WFS + Voltage + Everything</strong></p>
+            <p>The WFS number on display is what the machine calculated FOR you - you don't set it directly.</p>
+        </div>
+
+        <!-- R/L Calibration -->
+        <div class="info-box warning">
+            <h4 class="info-box-title">
+                <span class="material-icons-round">warning</span>
+                R/L Calibration
+            </h4>
+            <p>When you change your setup (torch, leads, etc.), run R/L Alignment:</p>
+            <ol>
+                <li>Process parameters → General → R/L-check / alignment</li>
+                <li>Ground clamp on CLEAN metal</li>
+                <li>Follow the wizard - press trigger when prompted</li>
+            </ol>
+            <p><strong>Skip this and your arc will feel off.</strong></p>
+        </div>
+    </section>
+
+    <!-- ==================== TIPS TAB ==================== -->
+    <section id="tips" class="tab-pane">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="material-icons-round">lightbulb</span>
+                Pro Tips
+            </h2>
+            <p class="section-subtitle">Real-world guidance for dialing in your settings</p>
+        </div>
+
+        @foreach (var tipSection in Model.TipSections)
+        {
+            <div class="tip-section">
+                <h3 class="tip-section-title">
+                    <span class="material-icons-round">@tipSection.Icon</span>
+                    @tipSection.Title
+                </h3>
+                <ul class="tip-list">
+                    @foreach (var tip in tipSection.Tips)
+                    {
+                        <li>@tip</li>
+                    }
+                </ul>
+            </div>
+        }
+    </section>
+
+</main>
+
+@section Scripts {
+<script>
+    // Tab switching
+    let currentProcessFilter = 'all';
+
+    document.querySelectorAll('.nav-tab, .bottom-nav-item').forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabId = this.dataset.tab;
+
+            // Update active states
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.bottom-nav-item').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+            // Set new active
+            document.querySelectorAll(`[data-tab="${tabId}"]`).forEach(t => t.classList.add('active'));
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+    // Search functionality
+    function filterCharacteristics() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const cards = document.querySelectorAll('.char-card');
+
+        cards.forEach(card => {
+            const name = card.dataset.name;
+            const processes = card.dataset.processes;
+            const tags = card.dataset.tags;
+
+            const matchesSearch = name.includes(searchTerm) || tags.includes(searchTerm);
+            const matchesProcess = currentProcessFilter === 'all' || processes.includes(currentProcessFilter.toLowerCase());
+
+            card.style.display = (matchesSearch && matchesProcess) ? 'flex' : 'none';
+        });
+    }
+
+    function filterByProcess(process, btn) {
+        currentProcessFilter = process;
+        document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filterCharacteristics();
+    }
+
+    // Scenario detail
+    function showScenarioDetail(card) {
+        const detail = document.getElementById('scenarioDetail');
+        document.getElementById('detailTitle').textContent = card.querySelector('.scenario-title').textContent;
+        document.getElementById('detailProcess').textContent = card.dataset.process;
+        document.getElementById('detailCharacteristic').textContent = card.dataset.characteristic;
+        document.getElementById('detailNotes').textContent = card.dataset.notes;
+        detail.style.display = 'block';
+        detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function hideScenarioDetail() {
+        document.getElementById('scenarioDetail').style.display = 'none';
+    }
+</script>
+}
