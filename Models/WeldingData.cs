@@ -434,6 +434,54 @@ public static class WeldingDatabase
             ]
         },
         new Scenario {
+            Situation = "Pressure Vessel - Thick SS",
+            RecommendedProcess = "LSC root → PMC fill",
+            RecommendedCharacteristic = "root → dynamic",
+            Notes = "Open root with LSC, fill passes with PMC. Back purge critical!",
+            Tags = ["pressure vessel", "thick", "stainless", "vessel", "heavy", "tank"],
+            Tips = [
+                "ROOT: LSC 'root' or 'open root' - powerful arc, controllable",
+                "FILL/CAP: PMC 'dynamic' - good penetration, faster deposition",
+                "BACK PURGE always - argon inside prevents sugaring",
+                "Interpass temp MAX 300°F (150°C) for 304/316",
+                "5/8\"+ material: Preheat may help, consult WPS",
+                "Multiple passes - let it cool between, don't rush",
+                "Watch tie-ins on circ seams - full fusion critical"
+            ]
+        },
+        new Scenario {
+            Situation = "Rotator / Circ Seams",
+            RecommendedProcess = "PMC",
+            RecommendedCharacteristic = "dynamic or universal",
+            Notes = "Rotator speed = travel speed. Keep gun at 12 o'clock position.",
+            Tags = ["rotator", "circumferential", "circ", "seam", "turning roll"],
+            Tips = [
+                "Gun stays at 12 o'clock - rotator does the travel",
+                "Match rotator RPM to your normal travel speed",
+                "Larger diameter = faster RPM for same surface speed",
+                "Consistent stick-out is critical - don't chase the work",
+                "Stringer beads often better than weave on circ seams",
+                "Watch for arc blow on long runs - move ground if needed",
+                "Start/stop overlap: feather into previous start"
+            ]
+        },
+        new Scenario {
+            Situation = "Nozzle Welds",
+            RecommendedProcess = "PMC or LSC",
+            RecommendedCharacteristic = "pipe or root",
+            Notes = "Full pen nozzle set-ins/set-ons. Positional around the clock.",
+            Tags = ["nozzle", "set-in", "set-on", "branch", "fitting"],
+            Tips = [
+                "Root: LSC for control, especially at tight radius areas",
+                "Fill: PMC 'pipe' handles the position changes",
+                "6 o'clock and overhead areas: reduce heat slightly",
+                "Watch high side - gravity pulls puddle, go faster",
+                "Low side - puddle wants to sag, don't overfill",
+                "Back purge the nozzle cavity if possible",
+                "Grind tie-ins carefully - nozzle roots are critical"
+            ]
+        },
+        new Scenario {
             Situation = "Spot/plug welds",
             RecommendedProcess = "CMT",
             RecommendedCharacteristic = "hotspot",
@@ -546,6 +594,62 @@ public static class WeldingDatabase
                 "Clean material, good fit-up: Keep dynamics moderate or low for smooth arc.",
                 "Vertical up: Moderate dynamics helps control the puddle without it dripping.",
                 "Combined with arc length: Short arc + high dynamics = maximum penetration. Long arc + low dynamics = maximum forgiveness."
+            ]
+        },
+        new TipSection
+        {
+            Title = "Pressure Vessel - Thick Stainless",
+            Icon = "propane_tank",
+            Tips = [
+                "PROCESS STRATEGY: LSC 'root' for open roots → PMC 'dynamic' for fill & cap. This combo gives control on root, speed on fill.",
+                "BACK PURGE IS CRITICAL. Argon inside the vessel prevents sugaring (oxidation). No purge = failed x-ray.",
+                "INTERPASS TEMP: Max 300°F (150°C) for 304/316. Use a temp stick or IR gun. Let it cool - rushing = problems.",
+                "THICK MATERIAL (5/8\"+): May need preheat per WPS. Thick SS is a heat sink - first pass can be cold.",
+                "ROOT PASS: Keyhole technique. Watch the back of the puddle. Tight keyhole = good fusion without blow-through.",
+                "ARC LENGTH FOR ROOTS: Start at -2 to -4 (shorter). Concentrates heat, better penetration, less sugaring risk.",
+                "FILL PASSES: PMC 'dynamic' for penetration into previous passes. Stringer beads for better tie-in control.",
+                "MULTI-PASS SEQUENCE: Plan your passes. Don't trap slag or create stress risers. Grind tie-ins if needed.",
+                "DISTORTION CONTROL: Balanced welding sequence. Alternate sides. Don't weld one side completely then flip.",
+                "GAS: Tri-mix (90He/7.5Ar/2.5CO2) or 98Ar/2CO2 for stainless. Pure argon for back purge.",
+                "X-RAY PREP: Clean starts and stops. Grind out any questionable areas. Porosity and lack of fusion = reject.",
+                "WIRE: Match filler to base (ER308L for 304, ER316L for 316). Verify on WPS."
+            ]
+        },
+        new TipSection
+        {
+            Title = "Rotator & Circumferential Welds",
+            Icon = "sync",
+            Tips = [
+                "ROTATOR SETUP: Gun at 12 o'clock position. Rotator does the travel - you just hold steady.",
+                "SURFACE SPEED: Rotator RPM × circumference = travel speed. Larger vessel = faster RPM for same IPM.",
+                "FORMULA: RPM = (Travel Speed in IPM) ÷ (π × Diameter in inches). Or just dial it in by feel.",
+                "STICK-OUT: Keep it consistent! Don't chase the work. Lock your arm position and let the rotator do the work.",
+                "STRINGER vs WEAVE: Stringers often better on circ seams - more consistent tie-in, less undercut risk.",
+                "ARC BLOW: Long continuous welds can cause arc blow. Move ground clamp closer or try AC process if bad.",
+                "START/STOP: Overlap your starts by 1/2\" to 1\". Feather into previous bead. Grind starts smooth if needed.",
+                "MULTI-PASS: Index the rotator slightly between passes so starts don't stack in same spot.",
+                "CROWN CONTROL: Watch bead height - too high and you're grinding, too low and you're adding passes.",
+                "INTERPASS ON ROTATOR: Let it cool! You can rotate to a new area while previous cools.",
+                "TACKS: Remove or grind tacks flush as you approach them. Buried tacks = defects."
+            ]
+        },
+        new TipSection
+        {
+            Title = "Nozzle & Branch Connections",
+            Icon = "call_split",
+            Tips = [
+                "NOZZLE TYPES: Set-in (through shell) vs set-on (on surface). Set-ins need full pen root from inside.",
+                "POSITIONAL CHALLENGE: You're welding all positions around the nozzle - flat, vertical, overhead in one weld.",
+                "ROOT PASS: LSC 'root' or 'pipe' for control. Start at 6 o'clock, work up both sides to 12.",
+                "6 O'CLOCK: Overhead position - reduce heat slightly, tighter arc, faster travel. Puddle wants to drip.",
+                "12 O'CLOCK: Flat position - can run a bit hotter, but watch for sagging on fill passes.",
+                "3 & 9 O'CLOCK: Vertical - watch for undercut on high side, rollover on low side.",
+                "TIGHT RADIUS: Small nozzles have tight inside radius. Root access is limited - may need to grind back.",
+                "BACK PURGE: Purge the nozzle bore and inside of vessel. Plug the nozzle opening, vent through vessel.",
+                "REINFORCEMENT: Nozzle welds often need reinforcing pad welds. These are fillet welds - PMC works well.",
+                "GRINDING: Grind tie-ins between passes. Nozzle welds get x-rayed or UT'd - no lack of fusion allowed.",
+                "SEQUENCE: Some WPS specify weld sequence for nozzles. Check before you start.",
+                "FITUP: Gap and land critical on nozzle roots. Take time to fit it right - harder to fix later."
             ]
         },
         new TipSection
