@@ -212,6 +212,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 2px;
     padding: var(--space-xs) var(--space-sm);
     color: var(--text-low);
@@ -223,6 +224,8 @@ body {
     min-width: 56px;
     flex: 1;
     max-width: 80px;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .bottom-nav-item .material-icons-round {
@@ -1255,6 +1258,23 @@ body {
 
     .char-name {
         font-size: 0.9rem;
+        margin-bottom: var(--space-xs);
+    }
+
+    .char-processes {
+        gap: 4px;
+        margin-bottom: var(--space-xs);
+    }
+
+    .char-processes .badge-neutral {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+        border-radius: var(--radius-sm);
+    }
+
+    .char-desc {
+        font-size: 0.85rem;
+        line-height: 1.4;
     }
 
     /* Search */
@@ -1367,6 +1387,20 @@ body {
     .scenario-badges {
         flex-direction: column;
         gap: var(--space-xs);
+    }
+
+    /* Char cards even tighter on small phones */
+    .char-name {
+        font-size: 0.85rem;
+    }
+
+    .char-processes .badge-neutral {
+        font-size: 0.6rem;
+        padding: 1px 5px;
+    }
+
+    .char-desc {
+        font-size: 0.8rem;
     }
 }
 

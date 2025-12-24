@@ -96,22 +96,22 @@ public static class WeldingDatabase
             HowItWorks = "The wire moves back and forth (reverses) at up to 170 Hz. This controlled droplet detachment during short circuit keeps current low. Result: virtually spatter-free with minimal heat input.",
             BestFor = ["Thin sheet", "Galvanized", "Aluminum", "Gap bridging", "Brazing"],
             Pros = ["Lowest heat input", "Almost no spatter", "Bridges gaps", "Minimal distortion"],
-            Cons = ["Requires special CMT drive unit", "Lower deposition rate", "Slower"]
+            Cons = ["Requires special CMT drive unit", "Lower deposition than spray arc", "Slower than PMC at high power"]
         }
     };
 
     public static List<Characteristic> Characteristics => new()
     {
         // Most commonly used
-        new Characteristic { Name = "universal", Processes = ["CMT", "PMC", "Puls", "Standard"], Description = "The GO-TO setting for ALL standard welding tasks.", Tags = ["default", "general", "standard", "all-purpose"] },
-        new Characteristic { Name = "dynamic", Processes = ["CMT", "PMC", "Puls", "Standard"], Description = "DEEP penetration, reliable root fusion at HIGH welding speeds.", Tags = ["penetration", "fast", "root", "hot"] },
+        new Characteristic { Name = "universal", Processes = ["CMT", "PMC", "Pulse", "Standard"], Description = "The GO-TO setting for ALL standard welding tasks.", Tags = ["default", "general", "standard", "all-purpose"] },
+        new Characteristic { Name = "dynamic", Processes = ["CMT", "PMC", "Pulse", "Standard"], Description = "DEEP penetration, reliable root fusion at HIGH welding speeds.", Tags = ["penetration", "fast", "root", "hot"] },
         new Characteristic { Name = "root", Processes = ["CMT", "LSC", "Standard"], Description = "For ROOT PASSES with powerful arc.", Tags = ["root", "gap", "open root", "first pass"] },
         new Characteristic { Name = "open root", Processes = ["LSC", "CMT"], Description = "POWERFUL arc for ROOT PASSES with air gap.", Tags = ["root", "gap", "air gap", "open"] },
         new Characteristic { Name = "gap bridging", Processes = ["CMT", "PMC"], Description = "BEST gap-bridging ability due to VERY LOW heat input.", Tags = ["gap", "poor fitup", "bridging", "low heat"] },
-        new Characteristic { Name = "galvanized", Processes = ["CMT", "LSC", "PMC", "Puls", "Standard"], Description = "For GALVANIZED sheet - LOW risk of zinc pores and reduced penetration.", Tags = ["galvanized", "zinc", "coated", "sheet"] },
+        new Characteristic { Name = "galvanized", Processes = ["CMT", "LSC", "PMC", "Pulse", "Standard"], Description = "For GALVANIZED sheet - LOW risk of zinc pores and reduced penetration.", Tags = ["galvanized", "zinc", "coated", "sheet"] },
         new Characteristic { Name = "cladding", Processes = ["CMT", "LSC", "PMC"], Description = "OVERLAY welding - LOW penetration, LOW dilution, WIDE weld seam, improved wetting.", Tags = ["overlay", "cladding", "buildup", "wide bead"] },
         new Characteristic { Name = "pipe", Processes = ["PMC", "Pulse", "Standard"], Description = "For PIPE applications and positional welding on narrow gap applications.", Tags = ["pipe", "positional", "narrow gap"] },
-        new Characteristic { Name = "retro", Processes = ["CMT", "Puls", "PMC", "Standard"], Description = "Same weld properties as the old TransPuls Synergic (TPS) series. Legacy mode.", Tags = ["legacy", "old", "transpuls", "classic"] },
+        new Characteristic { Name = "retro", Processes = ["CMT", "Pulse", "PMC", "Standard"], Description = "Same weld properties as the old TransPuls Synergic (TPS) series. Legacy mode.", Tags = ["legacy", "old", "transpuls", "classic"] },
 
         // AC modes
         new Characteristic { Name = "AC additive", Processes = ["PMC", "CMT"], Description = "For bead-on-bead on adaptive structures. Flips polarity to keep heat LOW but still get HIGH deposition. More stable arc.", Tags = ["AC", "additive", "low heat", "deposition"] },
@@ -121,7 +121,7 @@ public static class WeldingDatabase
         // ADV modes
         new Characteristic { Name = "additive", Processes = ["CMT"], Description = "Reduced heat, greater stability, HIGHER deposition rate. For bead-on-bead on adaptive structures.", Tags = ["additive", "deposition", "buildup"] },
         new Characteristic { Name = "ADV (CMT)", Processes = ["CMT"], Description = "Needs inverter module. Alternating current process. Negative polarity phase = LOW heat + HIGH deposition.", Tags = ["ADV", "advanced", "AC", "deposition"] },
-        new Characteristic { Name = "ADV (LSC)", Processes = ["LSC"], Description = "Needs electronic switch. Maximum current reduction by opening circuit in each process phase. Only works with TPS 400i LSC ADV.", Tags = ["ADV", "advanced", "LSC", "low spatter"] },
+        new Characteristic { Name = "ADV (LSC)", Processes = ["LSC Advanced"], Description = "Needs electronic switch. Maximum current reduction by opening circuit in each process phase. Only works with TPS 400i LSC ADV.", Tags = ["ADV", "advanced", "LSC", "low spatter"] },
         new Characteristic { Name = "ADV braze", Processes = ["CMT"], Description = "For BRAZING - reliable wetting, good flow of braze material. Almost NO spatter in dip transfer. Good for long hosepacks.", Tags = ["braze", "brazing", "ADV"] },
         new Characteristic { Name = "ADV root", Processes = ["LSC Advanced"], Description = "For ROOT PASSES with powerful arc. Almost no spatter in dip transfer. Good for long hosepacks.", Tags = ["root", "ADV", "advanced"] },
         new Characteristic { Name = "ADV universal", Processes = ["LSC Advanced"], Description = "For ALL standard tasks. Almost no spatter in dip transfer. Good for long hosepacks.", Tags = ["universal", "ADV", "advanced"] },
@@ -256,10 +256,11 @@ public static class WeldingDatabase
             Notes = "CMT for thin, pulse for thick",
             Tags = ["aluminum", "aluminium", "alloy"],
             Tips = [
-                "CLEAN the aluminum - wire brush or acetone",
-                "Pure argon gas only",
+                "CLEAN the aluminum - stainless steel brush or acetone",
+                "Use STAINLESS brush only - carbon steel contaminates",
+                "Pure argon gas only (99.995%+)",
                 "Push angle (10-15°) - never drag on aluminum",
-                "Preheat thick sections to prevent cracking",
+                "Preheat thick sections (>6mm) to prevent cracking",
                 "CMT for thin stuff - lowest heat possible"
             ]
         },
@@ -341,10 +342,11 @@ public static class WeldingDatabase
             Tags = ["galvanized", "zinc", "coated"],
             Tips = [
                 "Galvanized characteristic = optimized for zinc",
-                "VENTILATION - zinc fumes are nasty",
+                "VENTILATION CRITICAL - zinc fumes cause metal fume fever",
+                "Use respirator (N95 minimum) in confined spaces",
                 "Expect more spatter than bare steel",
                 "Longer arc (+) helps zinc escape",
-                "Grind zinc off if porosity is bad"
+                "Grind zinc off 1-2\" from joint if porosity persists"
             ]
         },
         new Scenario {
@@ -379,12 +381,12 @@ public static class WeldingDatabase
             Situation = "SynchroPulse - Stacked Dimes",
             RecommendedProcess = "PMC or Pulsed",
             RecommendedCharacteristic = "universal + SynchroPulse ON",
-            Notes = "Enable SynchroPulse, set frequency 1-3 Hz, amplitude 20-40%.",
+            Notes = "Enable SynchroPulse, set frequency 1-3 Hz, amplitude 2-3 m/min.",
             Tags = ["synchropulse", "TIG", "ripple", "stacked dimes", "cosmetic"],
             Tips = [
                 "Enable: Process params → SynchroPulse → ON",
-                "Frequency: 1.5-2.5 Hz for nice spacing",
-                "Amplitude: 30-40% for visible ripple",
+                "Frequency: 1.5-2.5 Hz for nice spacing (0.5-3 Hz range)",
+                "Amplitude: 2-3 m/min wire speed swing for visible ripple",
                 "Match travel speed to frequency",
                 "Slower = tighter ripples, faster = spread out"
             ]
@@ -553,11 +555,11 @@ public static class WeldingDatabase
             Tips = [
                 "SynchroPulse creates that stacked-dime TIG appearance by cycling between HIGH and LOW power.",
                 "Works with: Standard, Pulsed, LSC, and PMC processes. Most common with PMC or Pulsed.",
-                "ENABLE IT: Process parameters → SynchroPulse → turn it ON. Then set your frequency and amplitude.",
-                "FREQUENCY (Hz): How many ripples per second. 1-2 Hz = wide spacing (like slow TIG). 3-5 Hz = tighter ripples. Start at 2 Hz.",
-                "AMPLITUDE (%): How big the power swing is. Higher = more pronounced ripple. 20-30% for subtle, 40-50% for bold ripples.",
+                "ENABLE IT: Process parameters → SynchroPulse → turn it ON. Then set frequency and wire speed amplitude.",
+                "FREQUENCY (Hz): How many ripples per second. TPS 400i range: 0.5-3 Hz (up to 10 Hz with OPT/i upgrade). Start at 2 Hz.",
+                "AMPLITUDE: Wire speed swing in m/min. TPS 400i range: 0.1-6.0 m/min. Start around 2.0 m/min, increase for bolder ripples.",
                 "DUTY CYCLE: Ratio of high to low power time. 50% = equal. Higher = more time at high power (hotter average).",
-                "For COSMETIC welds: Try 1.5-2.5 Hz frequency, 30-40% amplitude. Adjust to match your travel speed.",
+                "For COSMETIC welds: Try 1.5-2.5 Hz frequency, 2-3 m/min amplitude. Adjust to match your travel speed.",
                 "Travel speed matters! Slower travel = ripples stack tighter. Faster = ripples spread out. Match frequency to your speed.",
                 "Vertical up: SynchroPulse helps control the puddle - the LOW phase lets the puddle freeze slightly.",
                 "Too much spatter? Lower the amplitude. Ripples too subtle? Increase amplitude or slow down.",
