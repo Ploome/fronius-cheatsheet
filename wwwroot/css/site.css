@@ -381,6 +381,184 @@ body {
     gap: var(--space-sm);
 }
 
+.scenario-notes {
+    margin: var(--space-md) 0 0 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--surface-4);
+    font-size: 0.9rem;
+    color: var(--text-medium);
+    line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   SCENARIO MODAL
+   -------------------------------------------------------------------------- */
+.scenario-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+}
+
+.scenario-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scenario-modal-content {
+    background: var(--surface-2);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--surface-4);
+    padding: var(--space-xl);
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.9) translateY(20px);
+    transition: transform var(--transition-normal);
+    box-shadow: var(--elevation-3);
+}
+
+.scenario-modal.active .scenario-modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: var(--surface-4);
+    border-radius: var(--radius-full);
+    color: var(--text-medium);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+
+.modal-close:hover {
+    background: var(--accent-danger);
+    color: white;
+}
+
+.modal-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-high);
+    margin: 0 0 var(--space-lg) 0;
+    padding-right: 40px;
+}
+
+.modal-badges {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+
+.modal-badge-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.modal-label {
+    font-size: 0.85rem;
+    color: var(--text-low);
+    font-weight: 500;
+    min-width: 100px;
+}
+
+.modal-notes {
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--surface-4);
+}
+
+.modal-notes p {
+    margin: var(--space-sm) 0 0 0;
+    font-size: 1rem;
+    color: var(--text-high);
+    line-height: 1.6;
+}
+
+/* Modal Tips Section */
+.modal-tips {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--surface-4);
+}
+
+.modal-tips-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent-warning);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.modal-tips-title .material-icons-round {
+    font-size: 20px;
+}
+
+.modal-tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-tips-list li {
+    position: relative;
+    padding: var(--space-sm) 0 var(--space-sm) var(--space-lg);
+    color: var(--text-medium);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--surface-3);
+}
+
+.modal-tips-list li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.modal-tips-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent-success);
+    font-weight: 700;
+}
+
+/* Scenario Tap Hint */
+.scenario-tap-hint {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-top: var(--space-md);
+    font-size: 0.8rem;
+    color: var(--text-low);
+    font-weight: 500;
+}
+
+.scenario-tap-hint .material-icons-round {
+    font-size: 16px;
+    color: var(--accent-primary);
+}
+
 /* --------------------------------------------------------------------------
    BADGES / CHIPS
    -------------------------------------------------------------------------- */

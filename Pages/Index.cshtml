@@ -64,39 +64,56 @@
         <div class="card-grid">
             @foreach (var scenario in Model.Scenarios)
             {
-                <div class="scenario-card" onclick="showScenarioDetail(this)"
+                <div class="scenario-card" onclick="openScenarioModal(this)"
+                     data-title="@scenario.Situation"
                      data-process="@scenario.RecommendedProcess"
                      data-characteristic="@scenario.RecommendedCharacteristic"
-                     data-notes="@scenario.Notes">
+                     data-notes="@scenario.Notes"
+                     data-tips="@string.Join("|", scenario.Tips)">
                     <h3 class="scenario-title">@scenario.Situation</h3>
                     <div class="scenario-badges">
                         <span class="badge-custom badge-process">@scenario.RecommendedProcess</span>
                         <span class="badge-custom badge-characteristic">@scenario.RecommendedCharacteristic</span>
                     </div>
+                    <p class="scenario-notes">@scenario.Notes</p>
+                    @if (scenario.Tips.Length > 0)
+                    {
+                        <div class="scenario-tap-hint">
+                            <span class="material-icons-round">touch_app</span>
+                            Tap for tips
+                        </div>
+                    }
                 </div>
             }
         </div>
 
-        <!-- Detail Panel -->
-        <div id="scenarioDetail" class="detail-panel" style="display:none;">
-            <div class="detail-header">
-                <h3 class="detail-title" id="detailTitle"></h3>
-                <button class="detail-close" onclick="hideScenarioDetail()">
+        <!-- Modal Overlay -->
+        <div id="scenarioModal" class="scenario-modal" onclick="closeScenarioModal(event)">
+            <div class="scenario-modal-content" onclick="event.stopPropagation()">
+                <button class="modal-close" onclick="closeScenarioModal()">
                     <span class="material-icons-round">close</span>
                 </button>
-            </div>
-            <div class="detail-body">
-                <div class="detail-row">
-                    <span class="detail-label">Process</span>
-                    <span class="detail-value process" id="detailProcess"></span>
+                <h3 class="modal-title" id="modalTitle"></h3>
+                <div class="modal-badges">
+                    <div class="modal-badge-row">
+                        <span class="modal-label">Process</span>
+                        <span class="badge-custom badge-process" id="modalProcess"></span>
+                    </div>
+                    <div class="modal-badge-row">
+                        <span class="modal-label">Characteristic</span>
+                        <span class="badge-custom badge-characteristic" id="modalCharacteristic"></span>
+                    </div>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Characteristic</span>
-                    <span class="detail-value characteristic" id="detailCharacteristic"></span>
+                <div class="modal-notes">
+                    <span class="modal-label">Notes</span>
+                    <p id="modalNotes"></p>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">Notes</span>
-                    <span class="detail-value" id="detailNotes"></span>
+                <div class="modal-tips" id="modalTipsSection">
+                    <h4 class="modal-tips-title">
+                        <span class="material-icons-round">tips_and_updates</span>
+                        Execution Tips
+                    </h4>
+                    <ul class="modal-tips-list" id="modalTips"></ul>
                 </div>
             </div>
         </div>
@@ -386,19 +403,49 @@
         filterCharacteristics();
     }
 
-    // Scenario detail
-    function showScenarioDetail(card) {
-        const detail = document.getElementById('scenarioDetail');
-        document.getElementById('detailTitle').textContent = card.querySelector('.scenario-title').textContent;
-        document.getElementById('detailProcess').textContent = card.dataset.process;
-        document.getElementById('detailCharacteristic').textContent = card.dataset.characteristic;
-        document.getElementById('detailNotes').textContent = card.dataset.notes;
-        detail.style.display = 'block';
-        detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Scenario modal
+    function openScenarioModal(card) {
+        const modal = document.getElementById('scenarioModal');
+        document.getElementById('modalTitle').textContent = card.dataset.title;
+        document.getElementById('modalProcess').textContent = card.dataset.process;
+        document.getElementById('modalCharacteristic').textContent = card.dataset.characteristic;
+        document.getElementById('modalNotes').textContent = card.dataset.notes;
+
+        // Parse and display tips
+        const tipsSection = document.getElementById('modalTipsSection');
+        const tipsList = document.getElementById('modalTips');
+        const tipsData = card.dataset.tips;
+
+        tipsList.innerHTML = '';
+
+        if (tipsData && tipsData.trim() !== '') {
+            const tips = tipsData.split('|');
+            tips.forEach(tip => {
+                if (tip.trim()) {
+                    const li = document.createElement('li');
+                    li.textContent = tip.trim();
+                    tipsList.appendChild(li);
+                }
+            });
+            tipsSection.style.display = 'block';
+        } else {
+            tipsSection.style.display = 'none';
+        }
+
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 
-    function hideScenarioDetail() {
-        document.getElementById('scenarioDetail').style.display = 'none';
+    function closeScenarioModal(event) {
+        if (event && event.target !== event.currentTarget) return;
+        const modal = document.getElementById('scenarioModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
     }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeScenarioModal();
+    });
 </script>
 }

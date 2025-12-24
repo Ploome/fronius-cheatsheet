@@ -26,6 +26,7 @@ public class Scenario
     public string RecommendedCharacteristic { get; set; } = "";
     public string Notes { get; set; } = "";
     public string[] Tags { get; set; } = [];
+    public string[] Tips { get; set; } = []; // Execution tips for this scenario
 }
 
 public class Parameter
@@ -179,26 +180,285 @@ public static class WeldingDatabase
 
     public static List<Scenario> Scenarios => new()
     {
-        new Scenario { Situation = "General steel fabrication", RecommendedProcess = "PMC", RecommendedCharacteristic = "universal", Notes = "Your bread and butter", Tags = ["steel", "general", "fabrication"] },
-        new Scenario { Situation = "Thin gauge sheet (<2mm)", RecommendedProcess = "CMT or LSC", RecommendedCharacteristic = "universal or galvanized", Notes = "Low heat = less burn-through", Tags = ["thin", "sheet", "gauge"] },
-        new Scenario { Situation = "Root pass with gap", RecommendedProcess = "LSC or CMT", RecommendedCharacteristic = "root or open root", Notes = "Powerful arc, handles gaps", Tags = ["root", "gap", "first pass"] },
-        new Scenario { Situation = "Fill & cap passes", RecommendedProcess = "PMC", RecommendedCharacteristic = "dynamic or universal", Notes = "Good penetration, fast", Tags = ["fill", "cap", "cover"] },
-        new Scenario { Situation = "Vertical up", RecommendedProcess = "PMC", RecommendedCharacteristic = "PCS mix", Notes = "Hot/cold cycling helps build shelf", Tags = ["vertical", "uphill", "positional"] },
-        new Scenario { Situation = "Aluminum", RecommendedProcess = "Pulsed or CMT", RecommendedCharacteristic = "universal", Notes = "CMT for thin, pulse for thick", Tags = ["aluminum", "aluminium", "alloy"] },
-        new Scenario { Situation = "Stainless - General", RecommendedProcess = "PMC", RecommendedCharacteristic = "universal", Notes = "Keep heat LOW to avoid sugaring. Use tri-mix or 98/2 gas.", Tags = ["stainless", "SS", "304", "316", "general"] },
-        new Scenario { Situation = "Stainless - Open Root", RecommendedProcess = "LSC or CMT", RecommendedCharacteristic = "root or open root", Notes = "LSC gives control, CMT for thin wall. Back purge if you can!", Tags = ["stainless", "SS", "root", "open root", "pipe"] },
-        new Scenario { Situation = "Stainless - Fill & Cap", RecommendedProcess = "PMC", RecommendedCharacteristic = "dynamic or universal", Notes = "Watch interpass temp! Let it cool between passes. Stainless holds heat.", Tags = ["stainless", "SS", "fill", "cap", "cover"] },
-        new Scenario { Situation = "Stainless - Thin Wall Pipe", RecommendedProcess = "CMT", RecommendedCharacteristic = "universal or root", Notes = "CMT's low heat prevents burn-through and sugaring. Back purge critical!", Tags = ["stainless", "SS", "pipe", "thin wall", "tube"] },
-        new Scenario { Situation = "Stainless - Avoiding Sugaring", RecommendedProcess = "CMT or LSC", RecommendedCharacteristic = "universal", Notes = "Lower heat input = less oxidation on backside. Shorten arc length (-2 to -5).", Tags = ["stainless", "SS", "sugaring", "oxidation", "backside"] },
-        new Scenario { Situation = "Galvanized material", RecommendedProcess = "Any", RecommendedCharacteristic = "galvanized", Notes = "Reduces zinc blowout and pores", Tags = ["galvanized", "zinc", "coated"] },
-        new Scenario { Situation = "Brazing", RecommendedProcess = "CMT", RecommendedCharacteristic = "braze or ADV braze", Notes = "Wire reversal helps braze flow", Tags = ["braze", "brazing", "bronze"] },
-        new Scenario { Situation = "Pretty TIG-looking beads", RecommendedProcess = "PMC", RecommendedCharacteristic = "ripple drive or mix", Notes = "Creates stacked dime look. Or use SynchroPulse!", Tags = ["TIG", "pretty", "ripple", "stacked dimes", "synchropulse"] },
-        new Scenario { Situation = "SynchroPulse - Stacked Dimes", RecommendedProcess = "PMC or Pulsed", RecommendedCharacteristic = "universal + SynchroPulse ON", Notes = "Enable SynchroPulse, set frequency 1-3 Hz, amplitude 20-40%. Creates TIG-like ripple.", Tags = ["synchropulse", "TIG", "ripple", "stacked dimes", "cosmetic"] },
-        new Scenario { Situation = "Poor fit-up / big gaps", RecommendedProcess = "CMT", RecommendedCharacteristic = "gap bridging", Notes = "Lowest heat = best bridging", Tags = ["gap", "fitup", "poor fit"] },
-        new Scenario { Situation = "Overlay / hardfacing", RecommendedProcess = "CMT or PMC", RecommendedCharacteristic = "cladding", Notes = "Low penetration, low dilution", Tags = ["overlay", "hardfacing", "cladding", "buildup"] },
-        new Scenario { Situation = "Pipe welding", RecommendedProcess = "PMC or Standard", RecommendedCharacteristic = "pipe", Notes = "Optimized for positional work", Tags = ["pipe", "tube", "positional"] },
-        new Scenario { Situation = "Spot/plug welds", RecommendedProcess = "CMT", RecommendedCharacteristic = "hotspot", Notes = "Hot start for plug welds", Tags = ["spot", "plug", "tack"] },
-        new Scenario { Situation = "Arc blow problems", RecommendedProcess = "PMC", RecommendedCharacteristic = "arc blow", Notes = "Prevents magnetic arc wander", Tags = ["arc blow", "magnetic", "wander"] }
+        new Scenario {
+            Situation = "General steel fabrication",
+            RecommendedProcess = "PMC",
+            RecommendedCharacteristic = "universal",
+            Notes = "Your bread and butter - works for most steel jobs",
+            Tags = ["steel", "general", "fabrication"],
+            Tips = [
+                "Start with arc length at 0, adjust ±2 if needed",
+                "Dynamics around middle - increase for mill scale",
+                "15-20° drag angle for good penetration",
+                "3/4\" stickout is typical"
+            ]
+        },
+        new Scenario {
+            Situation = "Thin gauge sheet (<2mm)",
+            RecommendedProcess = "CMT or LSC",
+            RecommendedCharacteristic = "universal or galvanized",
+            Notes = "Low heat = less burn-through and warping",
+            Tags = ["thin", "sheet", "gauge"],
+            Tips = [
+                "Keep arc length SHORT (-2 to -3) to focus heat",
+                "Dynamics LOW to reduce dig",
+                "Move FAST - don't let heat build up",
+                "Tack frequently to control warping",
+                "CMT if you're still burning through with LSC"
+            ]
+        },
+        new Scenario {
+            Situation = "Root pass with gap",
+            RecommendedProcess = "LSC or CMT",
+            RecommendedCharacteristic = "root or open root",
+            Notes = "Powerful arc, handles gaps well",
+            Tags = ["root", "gap", "first pass"],
+            Tips = [
+                "Arc length: LONGER (+2 to +4) for bigger gaps",
+                "Watch the keyhole - fill it as you go",
+                "Increase I-S (hot start) if starts lack fusion",
+                "Travel speed: not too slow or you'll burn through",
+                "Bump dynamics DOWN if blowing holes"
+            ]
+        },
+        new Scenario {
+            Situation = "Fill & cap passes",
+            RecommendedProcess = "PMC",
+            RecommendedCharacteristic = "dynamic or universal",
+            Notes = "Good penetration with fast travel speeds",
+            Tags = ["fill", "cap", "cover"],
+            Tips = [
+                "Use 'dynamic' for more penetration into root",
+                "Weave or stringer - match to joint width",
+                "Watch tie-ins at toes - avoid undercut",
+                "Slight drag angle (10-15°) for caps",
+                "Let previous pass cool if stacking"
+            ]
+        },
+        new Scenario {
+            Situation = "Vertical up",
+            RecommendedProcess = "PMC",
+            RecommendedCharacteristic = "PCS mix",
+            Notes = "Hot/cold cycling helps build a shelf",
+            Tags = ["vertical", "uphill", "positional"],
+            Tips = [
+                "PCS mix cycles hot/cold - puddle freezes on cold phase",
+                "Small weave, pause at toes to fill",
+                "Keep arc on leading edge of puddle",
+                "If puddle drips: speed up or lower heat",
+                "Dynamics moderate - too high and it drips"
+            ]
+        },
+        new Scenario {
+            Situation = "Aluminum",
+            RecommendedProcess = "Pulsed or CMT",
+            RecommendedCharacteristic = "universal",
+            Notes = "CMT for thin, pulse for thick",
+            Tags = ["aluminum", "aluminium", "alloy"],
+            Tips = [
+                "CLEAN the aluminum - wire brush or acetone",
+                "Pure argon gas only",
+                "Push angle (10-15°) - never drag on aluminum",
+                "Preheat thick sections to prevent cracking",
+                "CMT for thin stuff - lowest heat possible"
+            ]
+        },
+        new Scenario {
+            Situation = "Stainless - General",
+            RecommendedProcess = "PMC",
+            RecommendedCharacteristic = "universal",
+            Notes = "Keep heat LOW to avoid sugaring. Use tri-mix or 98/2 gas.",
+            Tags = ["stainless", "SS", "304", "316", "general"],
+            Tips = [
+                "Gas: tri-mix or 98% Ar / 2% CO2",
+                "Arc length SHORT (-2 to -4) - concentrate heat",
+                "Travel FAST - don't let heat build",
+                "Interpass temp max 300°F for 304/316",
+                "Stainless brush only - no carbon contamination"
+            ]
+        },
+        new Scenario {
+            Situation = "Stainless - Open Root",
+            RecommendedProcess = "LSC or CMT",
+            RecommendedCharacteristic = "root or open root",
+            Notes = "LSC gives control, CMT for thin wall. Back purge if you can!",
+            Tags = ["stainless", "SS", "root", "open root", "pipe"],
+            Tips = [
+                "BACK PURGE with argon - prevents sugaring",
+                "Arc length SHORT (-2 to -4)",
+                "Keyhole should be small and controlled",
+                "CMT for thin wall pipe - less burn-through risk",
+                "Dam both ends if purging pipe"
+            ]
+        },
+        new Scenario {
+            Situation = "Stainless - Fill & Cap",
+            RecommendedProcess = "PMC",
+            RecommendedCharacteristic = "dynamic or universal",
+            Notes = "Watch interpass temp! Let it cool between passes. Stainless holds heat.",
+            Tags = ["stainless", "SS", "fill", "cap", "cover"],
+            Tips = [
+                "Let it COOL between passes - 300°F max",
+                "Move faster than carbon steel",
+                "Smaller weld pool than you'd expect",
+                "Stringer beads often better than weave",
+                "Check color - purple/blue means too hot"
+            ]
+        },
+        new Scenario {
+            Situation = "Stainless - Thin Wall Pipe",
+            RecommendedProcess = "CMT",
+            RecommendedCharacteristic = "universal or root",
+            Notes = "CMT's low heat prevents burn-through and sugaring. Back purge critical!",
+            Tags = ["stainless", "SS", "pipe", "thin wall", "tube"],
+            Tips = [
+                "CMT is your best friend here - lowest heat",
+                "Back purge is NON-NEGOTIABLE",
+                "Tight keyhole, don't let it open up",
+                "Travel speed: find the sweet spot",
+                "If sugaring: more purge, less heat, faster travel"
+            ]
+        },
+        new Scenario {
+            Situation = "Stainless - Avoiding Sugaring",
+            RecommendedProcess = "CMT or LSC",
+            RecommendedCharacteristic = "universal",
+            Notes = "Lower heat input = less oxidation on backside. Shorten arc length (-2 to -5).",
+            Tags = ["stainless", "SS", "sugaring", "oxidation", "backside"],
+            Tips = [
+                "Sugaring = oxidation from heat on backside",
+                "Arc length SHORT (-2 to -5) - focus the heat",
+                "CMT or LSC for lowest heat input",
+                "Back purge with argon when possible",
+                "Travel faster, smaller weld pool"
+            ]
+        },
+        new Scenario {
+            Situation = "Galvanized material",
+            RecommendedProcess = "Any",
+            RecommendedCharacteristic = "galvanized",
+            Notes = "Reduces zinc blowout and porosity",
+            Tags = ["galvanized", "zinc", "coated"],
+            Tips = [
+                "Galvanized characteristic = optimized for zinc",
+                "VENTILATION - zinc fumes are nasty",
+                "Expect more spatter than bare steel",
+                "Longer arc (+) helps zinc escape",
+                "Grind zinc off if porosity is bad"
+            ]
+        },
+        new Scenario {
+            Situation = "Brazing",
+            RecommendedProcess = "CMT",
+            RecommendedCharacteristic = "braze or ADV braze",
+            Notes = "Wire reversal helps braze material flow",
+            Tags = ["braze", "brazing", "bronze"],
+            Tips = [
+                "CMT wire reversal = perfect for brazing",
+                "Keep heat LOW - you're flowing, not melting base",
+                "Push angle to direct heat forward",
+                "Braze wire (CuSi3 etc) not steel wire",
+                "Clean joint - flux helps wetting"
+            ]
+        },
+        new Scenario {
+            Situation = "Pretty TIG-looking beads",
+            RecommendedProcess = "PMC",
+            RecommendedCharacteristic = "ripple drive or mix",
+            Notes = "Creates stacked dime look. Or use SynchroPulse!",
+            Tags = ["TIG", "pretty", "ripple", "stacked dimes", "synchropulse"],
+            Tips = [
+                "Ripple drive or mix = wire cycles for ripple effect",
+                "Alternative: SynchroPulse on any process",
+                "Slow, steady travel for even ripples",
+                "Match frequency to travel speed",
+                "Clean material = cleaner looking bead"
+            ]
+        },
+        new Scenario {
+            Situation = "SynchroPulse - Stacked Dimes",
+            RecommendedProcess = "PMC or Pulsed",
+            RecommendedCharacteristic = "universal + SynchroPulse ON",
+            Notes = "Enable SynchroPulse, set frequency 1-3 Hz, amplitude 20-40%.",
+            Tags = ["synchropulse", "TIG", "ripple", "stacked dimes", "cosmetic"],
+            Tips = [
+                "Enable: Process params → SynchroPulse → ON",
+                "Frequency: 1.5-2.5 Hz for nice spacing",
+                "Amplitude: 30-40% for visible ripple",
+                "Match travel speed to frequency",
+                "Slower = tighter ripples, faster = spread out"
+            ]
+        },
+        new Scenario {
+            Situation = "Poor fit-up / big gaps",
+            RecommendedProcess = "CMT",
+            RecommendedCharacteristic = "gap bridging",
+            Notes = "Lowest heat = best gap bridging ability",
+            Tags = ["gap", "fitup", "poor fit"],
+            Tips = [
+                "CMT gap bridging = maximum forgiveness",
+                "Arc length LONGER (+3 to +5) to bridge",
+                "Dynamics LOW - don't blow through",
+                "Weave to tie in both sides",
+                "Multiple passes if gap is huge"
+            ]
+        },
+        new Scenario {
+            Situation = "Overlay / hardfacing",
+            RecommendedProcess = "CMT or PMC",
+            RecommendedCharacteristic = "cladding",
+            Notes = "Low penetration, low dilution, wide bead",
+            Tags = ["overlay", "hardfacing", "cladding", "buildup"],
+            Tips = [
+                "Cladding = LOW penetration by design",
+                "Wide weave for coverage",
+                "Overlap passes 30-50%",
+                "Keep it flat - gravity helps",
+                "Preheat if hardfacing wire requires it"
+            ]
+        },
+        new Scenario {
+            Situation = "Pipe welding",
+            RecommendedProcess = "PMC or Standard",
+            RecommendedCharacteristic = "pipe",
+            Notes = "Optimized for positional work around pipe",
+            Tags = ["pipe", "tube", "positional"],
+            Tips = [
+                "Pipe characteristic handles position changes",
+                "6G = all positions - adjust as you go",
+                "Uphill for root/hot pass typically",
+                "Watch tie-ins at 6 o'clock",
+                "Consistent travel speed around the clock"
+            ]
+        },
+        new Scenario {
+            Situation = "Spot/plug welds",
+            RecommendedProcess = "CMT",
+            RecommendedCharacteristic = "hotspot",
+            Notes = "Hot start sequence for plug welds",
+            Tags = ["spot", "plug", "tack"],
+            Tips = [
+                "Hotspot = timed weld sequence",
+                "Set spot time (SPt) for how long to weld",
+                "Keep gun perpendicular to work",
+                "Consistent pressure and position",
+                "Good for sheet metal lap joints"
+            ]
+        },
+        new Scenario {
+            Situation = "Arc blow problems",
+            RecommendedProcess = "PMC",
+            RecommendedCharacteristic = "arc blow",
+            Notes = "Prevents magnetic arc wander",
+            Tags = ["arc blow", "magnetic", "wander"],
+            Tips = [
+                "Arc blow = magnetic field pushing arc around",
+                "This characteristic compensates for it",
+                "Also try: move ground clamp position",
+                "Weld toward your ground when possible",
+                "DC issues - AC process eliminates it"
+            ]
+        }
     };
 
     public static List<Parameter> Parameters => new()
