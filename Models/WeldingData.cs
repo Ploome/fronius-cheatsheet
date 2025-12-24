@@ -200,11 +200,43 @@ public static class WeldingDatabase
             Notes = "Low heat = less burn-through and warping",
             Tags = ["thin", "sheet", "gauge"],
             Tips = [
+                "Thickness 1.5mm, Arc Length -2, Dynamics 0",
                 "Keep arc length SHORT (-2 to -3) to focus heat",
                 "Dynamics LOW to reduce dig",
                 "Move FAST - don't let heat build up",
                 "Tack frequently to control warping",
                 "CMT if you're still burning through with LSC"
+            ]
+        },
+        new Scenario {
+            Situation = "Carbon Steel - Thin (1-3mm)",
+            RecommendedProcess = "LSC or CMT",
+            RecommendedCharacteristic = "universal",
+            Notes = "Low spatter short arc. Good for sheet metal and light fab.",
+            Tags = ["carbon", "mild steel", "thin", "sheet"],
+            Tips = [
+                "Thickness 2mm, Arc Length 0, Dynamics 0",
+                "Wire: ER70S-6 (0.035\" or 0.045\")",
+                "Gas: 75/25 (Ar/CO2) or 90/10",
+                "LSC for control, CMT if burn-through is an issue",
+                "Arc length -1 to -3 for tighter bead",
+                "Move fast - thin material heats up quick"
+            ]
+        },
+        new Scenario {
+            Situation = "Carbon Steel - Thick (6mm+)",
+            RecommendedProcess = "PMC or Standard",
+            RecommendedCharacteristic = "dynamic",
+            Notes = "More heat, faster deposition. Good penetration for heavy plate.",
+            Tags = ["carbon", "mild steel", "thick", "plate", "heavy"],
+            Tips = [
+                "Thickness 8mm, Arc Length 0, Dynamics +2",
+                "Wire: ER70S-6 (0.045\" or 1/16\")",
+                "Gas: 75/25 or 90/10 (more CO2 = more penetration)",
+                "PMC 'dynamic' for good penetration",
+                "Can bump dynamics UP for dirty/mill scale steel",
+                "Multi-pass: let interpass cool to ~400°F",
+                "Preheat if >1\" thick or high carbon content"
             ]
         },
         new Scenario {
@@ -265,17 +297,34 @@ public static class WeldingDatabase
             ]
         },
         new Scenario {
-            Situation = "Stainless - General",
-            RecommendedProcess = "PMC",
+            Situation = "Stainless - Thin (1-3mm)",
+            RecommendedProcess = "LSC or CMT",
             RecommendedCharacteristic = "universal",
-            Notes = "Keep heat LOW to avoid sugaring. Use tri-mix or 98/2 gas.",
-            Tags = ["stainless", "SS", "304", "316", "general"],
+            Notes = "Low heat critical. CMT for very thin, LSC for more control.",
+            Tags = ["stainless", "SS", "304", "316", "thin"],
             Tips = [
+                "▶ START: Thickness 2mm, Arc Length -2, Dynamics 0",
+                "Wire: ER308L (for 304) or ER316L (for 316)",
                 "Gas: tri-mix or 98% Ar / 2% CO2",
-                "Arc length SHORT (-2 to -4) - concentrate heat",
-                "Travel FAST - don't let heat build",
-                "Interpass temp max 300°F for 304/316",
+                "CMT if burn-through is a problem",
+                "Travel FAST - stainless holds heat",
                 "Stainless brush only - no carbon contamination"
+            ]
+        },
+        new Scenario {
+            Situation = "Stainless - Thick (6mm+)",
+            RecommendedProcess = "PMC",
+            RecommendedCharacteristic = "dynamic or universal",
+            Notes = "Multi-pass required. Back purge roots. Watch interpass temp!",
+            Tags = ["stainless", "SS", "304", "316", "thick", "plate"],
+            Tips = [
+                "Thickness 8mm, Arc Length -2, Dynamics 0",
+                "Wire: ER308L or ER316L (match base metal)",
+                "Gas: tri-mix or 98/2 for fill, pure Ar for purge",
+                "PMC 'dynamic' for penetration into previous passes",
+                "Interpass temp MAX 300°F (150°C)",
+                "Stringer beads - better tie-in than weave",
+                "Back purge roots - no exceptions"
             ]
         },
         new Scenario {
@@ -285,11 +334,12 @@ public static class WeldingDatabase
             Notes = "LSC gives control, CMT for thin wall. Back purge if you can!",
             Tags = ["stainless", "SS", "root", "open root", "pipe"],
             Tips = [
+                "Thickness 5mm, Arc Length -3, Dynamics 0",
                 "BACK PURGE with argon - prevents sugaring",
-                "Arc length SHORT (-2 to -4)",
                 "Keyhole should be small and controlled",
                 "CMT for thin wall pipe - less burn-through risk",
-                "Dam both ends if purging pipe"
+                "Dam both ends if purging pipe",
+                "Watch the backside color - straw/gold is good, blue/purple is too hot"
             ]
         },
         new Scenario {
@@ -299,6 +349,7 @@ public static class WeldingDatabase
             Notes = "Watch interpass temp! Let it cool between passes. Stainless holds heat.",
             Tags = ["stainless", "SS", "fill", "cap", "cover"],
             Tips = [
+                "Same thickness as root, Arc Length -1, Dynamics 0",
                 "Let it COOL between passes - 300°F max",
                 "Move faster than carbon steel",
                 "Smaller weld pool than you'd expect",
@@ -440,10 +491,11 @@ public static class WeldingDatabase
             Notes = "Open root with LSC, fill passes with PMC. Back purge critical!",
             Tags = ["pressure vessel", "thick", "stainless", "vessel", "heavy", "tank"],
             Tips = [
-                "ROOT: LSC 'root' or 'open root' - powerful arc, controllable",
-                "FILL/CAP: PMC 'dynamic' - good penetration, faster deposition",
+                "ROOT: Thickness 6mm, Arc Length -3, Dynamics 0 (LSC 'root')",
+                "FILL: Thickness 8mm, Arc Length -1, Dynamics 0 (PMC 'dynamic')",
                 "BACK PURGE always - argon inside prevents sugaring",
                 "Interpass temp MAX 300°F (150°C) for 304/316",
+                "Wire: ER308L for 304, ER316L for 316 - verify WPS",
                 "5/8\"+ material: Preheat may help, consult WPS",
                 "Multiple passes - let it cool between, don't rush",
                 "Watch tie-ins on circ seams - full fusion critical"
@@ -456,6 +508,7 @@ public static class WeldingDatabase
             Notes = "Rotator speed = travel speed. Keep gun at 12 o'clock position.",
             Tags = ["rotator", "circumferential", "circ", "seam", "turning roll"],
             Tips = [
+                "Match thickness to joint, Arc Length 0, Dynamics 0",
                 "Gun stays at 12 o'clock - rotator does the travel",
                 "Match rotator RPM to your normal travel speed",
                 "Larger diameter = faster RPM for same surface speed",
@@ -472,6 +525,8 @@ public static class WeldingDatabase
             Notes = "Full pen nozzle set-ins/set-ons. Positional around the clock.",
             Tags = ["nozzle", "set-in", "set-on", "branch", "fitting"],
             Tips = [
+                "ROOT: Thickness 5mm, Arc Length -2, Dynamics 0 (LSC)",
+                "FILL: Thickness 6mm, Arc Length 0, Dynamics 0 (PMC 'pipe')",
                 "Root: LSC for control, especially at tight radius areas",
                 "Fill: PMC 'pipe' handles the position changes",
                 "6 o'clock and overhead areas: reduce heat slightly",
